@@ -3,9 +3,6 @@ name: Release and Publish to PyPI
 on:
   push:
     branches: [main]
-    paths:
-      - "strawpot_memory/**"
-      - "pyproject.toml"
   workflow_dispatch:
     inputs:
       version:
