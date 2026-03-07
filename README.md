@@ -55,3 +55,7 @@ assert isinstance(MyMemoryProvider(), MemoryProvider)  # runtime check
 - `GetResult` — full output of a `get` call
 - `DumpReceipt` — receipt returned by `dump`
 - `RememberResult` — result returned by `remember`
+
+## License
+
+MIT
