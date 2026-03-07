@@ -58,4 +58,4 @@ assert isinstance(MyMemoryProvider(), MemoryProvider)  # runtime check
 
 ## License
 
-MIT
+[MIT](LICENSE)
