@@ -20,6 +20,7 @@ from strawpot_memory.memory_protocol import (
     GetResult,
     DumpReceipt,
     RememberResult,
+    RecallResult,
 )
 
 
@@ -35,6 +36,9 @@ class MyMemoryProvider:
     def remember(self, *, session_id, agent_id, role, content, **kwargs) -> RememberResult:
         ...
 
+    def recall(self, *, session_id, agent_id, role, query, **kwargs) -> RecallResult:
+        ...
+
 
 assert isinstance(MyMemoryProvider(), MemoryProvider)  # runtime check
 ```
@@ -46,6 +50,7 @@ assert isinstance(MyMemoryProvider(), MemoryProvider)  # runtime check
 | `get` | Retrieve context cards and control signals before spawning an agent |
 | `dump` | Record agent results after completion |
 | `remember` | Persist knowledge during agent execution |
+| `recall` | Query stored knowledge on-demand during agent execution |
 
 ## Types
 
@@ -55,6 +60,8 @@ assert isinstance(MyMemoryProvider(), MemoryProvider)  # runtime check
 - `GetResult` — full output of a `get` call
 - `DumpReceipt` — receipt returned by `dump`
 - `RememberResult` — result returned by `remember`
+- `RecallEntry` — single entry returned by `recall`
+- `RecallResult` — result returned by `recall`
 
 ## License
 
