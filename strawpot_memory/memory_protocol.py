@@ -58,6 +58,24 @@ class RememberResult:
     entry_id: str = ""
 
 
+@dataclass
+class RecallEntry:
+    """Single entry returned by memory.recall."""
+
+    entry_id: str = ""
+    content: str = ""
+    keywords: list[str] = field(default_factory=list)
+    scope: str = ""
+    score: float = 0.0
+
+
+@dataclass
+class RecallResult:
+    """Result returned by memory.recall."""
+
+    entries: list[RecallEntry] = field(default_factory=list)
+
+
 @runtime_checkable
 class MemoryProvider(Protocol):
     """Interface that every memory provider must implement."""
@@ -138,5 +156,30 @@ class MemoryProvider(Protocol):
             keywords: Optional keywords for retrieval matching.
                 Empty or None means always-relevant (SM behavior).
             scope: One of "global", "project", or "role".
+        """
+        ...
+
+    def recall(
+        self,
+        *,
+        session_id: str,
+        agent_id: str,
+        role: str,
+        query: str,
+        keywords: list[str] | None = None,
+        scope: str = "",
+        max_results: int = 10,
+    ) -> RecallResult:
+        """Retrieve stored knowledge entries matching a query.
+
+        Args:
+            session_id: Session worktree identifier.
+            agent_id: Unique agent instance identifier.
+            role: Role slug for the calling agent.
+            query: Free-text query scored against stored keywords.
+            keywords: Optional explicit keyword filter.
+            scope: Limit to "global", "project", or "role".
+                Empty string searches all scopes.
+            max_results: Maximum entries to return.
         """
         ...
