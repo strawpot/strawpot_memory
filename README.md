@@ -27,16 +27,20 @@ from strawpot_memory.memory_protocol import (
 class MyMemoryProvider:
     name = "my-provider"
 
-    def get(self, *, session_id, agent_id, role, behavior_ref, task, **kwargs) -> GetResult:
+    def get(self, *, session_id, agent_id, role, behavior_ref, task,
+            budget=None, parent_agent_id=None, group_id=None) -> GetResult:
         ...
 
-    def dump(self, *, session_id, agent_id, role, behavior_ref, task, status, output, **kwargs) -> DumpReceipt:
+    def dump(self, *, session_id, agent_id, role, behavior_ref, task, status, output,
+             tool_trace="", parent_agent_id=None, artifacts=None, group_id=None) -> DumpReceipt:
         ...
 
-    def remember(self, *, session_id, agent_id, role, content, **kwargs) -> RememberResult:
+    def remember(self, *, session_id, agent_id, role, content,
+                 keywords=None, scope="project", group_id=None) -> RememberResult:
         ...
 
-    def recall(self, *, session_id, agent_id, role, query, **kwargs) -> RecallResult:
+    def recall(self, *, session_id, agent_id, role, query,
+               keywords=None, scope="", max_results=10, group_id=None) -> RecallResult:
         ...
 
 
