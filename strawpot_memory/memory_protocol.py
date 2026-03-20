@@ -92,6 +92,7 @@ class MemoryProvider(Protocol):
         task: str,
         budget: int | None = None,
         parent_agent_id: str | None = None,
+        group_id: str | None = None,
     ) -> GetResult:
         """Retrieve context cards and control signals before spawning an agent.
 
@@ -103,6 +104,7 @@ class MemoryProvider(Protocol):
             task: Task text describing what the agent should do.
             budget: Token budget hint for the provider (None if unknown).
             parent_agent_id: Parent agent instance id, if delegated.
+            group_id: Logical group for memory scoping (e.g. conversation ID).
         """
         ...
 
@@ -119,6 +121,7 @@ class MemoryProvider(Protocol):
         tool_trace: str = "",
         parent_agent_id: str | None = None,
         artifacts: dict[str, str] | None = None,
+        group_id: str | None = None,
     ) -> DumpReceipt:
         """Record agent results after completion.
 
@@ -133,6 +136,7 @@ class MemoryProvider(Protocol):
             tool_trace: Tool call trace text.
             parent_agent_id: Parent agent instance id, if delegated.
             artifacts: Additional artifacts (commit hash, patch refs, etc.).
+            group_id: Logical group for memory scoping (e.g. conversation ID).
         """
         ...
 
@@ -145,6 +149,7 @@ class MemoryProvider(Protocol):
         content: str,
         keywords: list[str] | None = None,
         scope: str = "project",
+        group_id: str | None = None,
     ) -> RememberResult:
         """Persist knowledge during agent execution.
 
@@ -156,6 +161,7 @@ class MemoryProvider(Protocol):
             keywords: Optional keywords for retrieval matching.
                 Empty or None means always-relevant (SM behavior).
             scope: One of "global", "project", or "role".
+            group_id: Logical group for memory scoping (e.g. conversation ID).
         """
         ...
 
@@ -169,6 +175,7 @@ class MemoryProvider(Protocol):
         keywords: list[str] | None = None,
         scope: str = "",
         max_results: int = 10,
+        group_id: str | None = None,
     ) -> RecallResult:
         """Retrieve stored knowledge entries matching a query.
 
@@ -181,5 +188,6 @@ class MemoryProvider(Protocol):
             scope: Limit to "global", "project", or "role".
                 Empty string searches all scopes.
             max_results: Maximum entries to return.
+            group_id: Logical group for memory scoping (e.g. conversation ID).
         """
         ...
