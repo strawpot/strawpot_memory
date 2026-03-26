@@ -76,6 +76,33 @@ class RecallResult:
     entries: list[RecallEntry] = field(default_factory=list)
 
 
+@dataclass
+class ForgetResult:
+    """Result returned by memory.forget."""
+
+    status: str = ""  # "deleted" | "not_found"
+    entry_id: str = ""
+
+
+@dataclass
+class ListEntry:
+    """Single entry returned by memory.list_entries."""
+
+    entry_id: str = ""
+    content: str = ""
+    keywords: list[str] = field(default_factory=list)
+    scope: str = ""
+    ts: str = ""
+
+
+@dataclass
+class ListResult:
+    """Result returned by memory.list_entries."""
+
+    entries: list[ListEntry] = field(default_factory=list)
+    total_count: int = 0
+
+
 @runtime_checkable
 class MemoryProvider(Protocol):
     """Interface that every memory provider must implement."""
@@ -189,5 +216,39 @@ class MemoryProvider(Protocol):
                 Empty string searches all scopes.
             max_results: Maximum entries to return.
             group_id: Logical group for memory scoping (e.g. conversation ID).
+        """
+        ...
+
+    def forget(
+        self,
+        *,
+        entry_id: str,
+        scope: str = "",
+    ) -> ForgetResult:
+        """Delete a specific memory entry by ID.
+
+        Args:
+            entry_id: Unique identifier of the entry to delete.
+            scope: Limit search to "global", "project", or "role".
+                Empty string searches all scopes.
+        """
+        ...
+
+    def list_entries(
+        self,
+        *,
+        scope: str = "",
+        role: str = "",
+        limit: int = 100,
+        offset: int = 0,
+    ) -> ListResult:
+        """List stored memory entries, optionally filtered by scope.
+
+        Args:
+            scope: Limit to "global", "project", or "role".
+                Empty string lists all scopes.
+            role: Role slug for role-scoped entries.
+            limit: Maximum entries to return.
+            offset: Number of entries to skip (for pagination).
         """
         ...
